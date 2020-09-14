@@ -18,8 +18,25 @@
 			</div>
 			<div id="example">
 				<img id="example-image" src="/img/bookmarks.jpg" alt="sample image">
+				<div id="example-links">
+					<a class="example-link" href="http://careful-turkey.surge.sh" target="_blank">
+						<div class="example-link-icon-wrapper">
+							<img class="example-link-icon" src="/icons/link.svg" alt="link">
+						</div>
+						<div class="example-link-text">Example</div>
+					</a>
+					<a class="example-link" href="https://github.com/xnhl/Bookmarks-Map-Website" target="_blank">
+						<div class="example-link-icon-wrapper">
+							<img class="example-link-icon" src="/icons/github.svg" alt="git hub">
+						</div>
+						<div class="example-link-text">GitHub</div>
+					</a>
+				</div>
 			</div>
-			<label id="label" for="input">Select a file</label>
+			<label id="label" for="input">
+				<img id="label-icon" src="/icons/folder.svg" alt="select a file">
+				<p id="label-text">Select a file</p>
+			</label>
 			<input id="input" type="file" name="input" @change="handleSelect">
 			<p id="error" class="hide">Sorry, something went wrong. Try reloading the page or using another file.</p>
 			<div id="output" :class="{ 'hide': !ready }">
@@ -223,15 +240,48 @@ ${html}
 		flex-direction: column
 		border-radius: 1rem/50rem
 		transition: all 0.2s ease-in-out
-		box-shadow: 0 0 0.5rem 0.1rem rgba(black, 0.1)
+		box-shadow: 0 0 0.25rem 0.15rem rgba(black, 0.1)
 		@media (min-width: 50rem)
 			margin: calc(1rem + 5vw) auto
 		#example
+			@include flexCenter
+			flex-direction: column
 			#example-image
 				height: auto
 				max-width: 100%
 				border-radius: 0.25rem
 				box-sizing: content-box
+				box-shadow: 0 0 0.25rem 0.15rem rgba(black, 0.25)
+			#example-links
+				width: 100%
+				margin: 0.5rem auto
+				max-width: 20rem
+				@include flexCenter
+				align-items: stretch
+				.example-link
+					flex: 1
+					margin: 0.5rem
+					cursor: pointer
+					background: #eee
+					@include flexCenter
+					text-decoration: none
+					border-radius: 0.25rem
+					transition: all 0.2s ease-in-out
+					box-shadow: 0 0 0.25rem 0.15rem rgba(black, 0.05)
+					&:hover
+						box-shadow: 0 0 0.25rem 0.15rem rgba(black, 0.15)
+						.example-link-icon-wrapper
+							.example-link-icon
+								transform: scale(1.25)
+					.example-link-icon-wrapper
+						.example-link-icon
+							width: 1.5rem
+							height: 1.5rem
+							padding: 0.5rem
+							box-sizing: content-box
+							transition: all 0.1s ease-in-out
+					.example-link-text
+						color: black
 		#intro
 			margin-bottom: 2rem
 			max-width: 45rem
@@ -257,15 +307,28 @@ ${html}
 			margin: 2rem auto
 			padding: 1.5rem
 			cursor: pointer
+			background: #eee
 			font-size: 1.5rem
 			line-height: 1.5rem
-			background: #eee
+			@include flexCenter
 			border-radius: 0.5rem
 			border-radius: 1rem/10rem
 			transition: all 0.2s ease-in-out
-			box-shadow: 0 0 0.5rem 0.1rem rgba(black, 0.1)
+			box-shadow: 0 0 0.25rem 0.15rem rgba(black, 0.1)
 			&:hover
-				box-shadow: 0 0 0.5rem 0.2rem rgba(black, 0.15)
+				box-shadow: 0 0 0.25rem 0.2rem rgba(black, 0.15)
+				#label-icon
+					transform: scale(1.25)
+			#label-text
+				padding: 0.5rem
+				font-size: 1.5rem
+				line-height: 1.5rem
+			#label-icon
+				width: 1.75rem
+				height: 1.75rem
+				padding: 0.5rem
+				box-sizing: content-box
+				transition: all 0.1s ease-in-out
 		#input
 			display: none
 		#output
@@ -283,13 +346,13 @@ ${html}
 				border-radius: 0.25rem
 				border-radius: 1rem/5rem
 				transition: all 0.2s ease-in-out
-				box-shadow: 0 0 0.5rem 0.1rem rgba(green, 0.1)
+				box-shadow: 0 0 0.25rem 0.15rem rgba(green, 0.1)
 				@media (min-width: 30rem)
 					flex: 1
 				&.ready
 					background: rgba(green, 0.25)
 				&:hover
-					box-shadow: 0 0 0.5rem 0.15rem rgba(green, 0.15)
+					box-shadow: 0 0 0.25rem 0.15rem rgba(green, 0.15)
 					background: rgba(green, 0.33)
 				.output-format-text
 					font-size: 1.5rem
