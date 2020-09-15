@@ -4,14 +4,19 @@
 			<div id="intro">
 				<div class="intro-section">
 					<p class="intro-section-title">Browser Bookmarks Map</p>
-					<p class="intro-section-text">Make an HTML map of your Firefox or Google Chrome bookmarks.</p>
+					<p class="intro-section-text">Make an HTML 'map' of your Firefox or Google Chrome bookmarks.</p>
 				</div>
 				<div class="intro-section">
-					<p class="intro-section-title">Perks</p>
+					<p class="intro-section-title">Features</p>
 					<p class="intro-section-text">- Open in any browser.</p>
-					<p class="intro-section-text">- Simple accordion-style layout.</p>
-					<p class="intro-section-text">- Dark theme (easier on the eyes).</p>
-					<p class="intro-section-text">- Convenient to share all of your bookmarks with others.</p>
+					<div class="intro-section-text">
+						- <details>
+							<summary>Simple accordion-style layout ...</summary>
+							... to easily toggle content.
+						</details>
+					</div>
+					<p class="intro-section-text">- Dark theme by default (easier on the eyes).</p>
+					<p class="intro-section-text">- Convenient to share your bookmarks with others.</p>
 					<p class="intro-section-text">- Your data is private and will never be recorded or shared.</p>
 					<p class="intro-section-text">- A stylesheet is included so that you may adjust colors to your preference.</p>
 				</div>
@@ -52,6 +57,11 @@
 					</div>
 					<p class="output-format-text">Markdown</p>
 				</div>
+			</div>
+			<div id="notes">
+				<div id="notes-title">File Locations</div>
+				<div class="note">- Firefox (Windows): <br/>Use the bookmarks menu to make a backup (.json)</div>
+				<div class="note">- Chrome (Windows): <br/>C:\Users\USERNAME\AppData\Local\Google\Chrome\User Data\Default\Bookmarks (no file extension)</div>
 			</div>
 		</div>
   </div>
@@ -103,7 +113,7 @@ export default {
 					} else this.convert_firefox(parsed)
 				}
 				reader.onerror = () => {
-					let err = document.getElementById("erro")
+					let err = document.getElementById("error")
 					err.classList.remove("hide")
 				}
 				reader.readAsText(file)
@@ -165,11 +175,9 @@ export default {
 				if (each.children && Array.isArray(each.children) && each.children.length) {
 					kids = each.children.map(each => this.createChildrenElements(each)).join("")
 				}
-				return `<details class='child'><summary>${each.name !== "" ? each.name : each.url}</summary>${kids}</details>`
+				return `\t<details class='child'><summary>${each.name !== "" ? each.name : each.url}</summary>\r\n${kids}</details>\r\n`
 			} else if (each.type = "url") {
-				return `<a href='${each.url}' target='_blank'>
-<span class='link-title'>${each.name !== "" ? each.name : each.url}</span><span class='link-url'>${each.url}</span>
-				</a>\n`
+				return `\t\t<a href='${each.url}' target='_blank'><span class='link-title'>${each.name !== "" ? each.name : each.url}</span><span class='link-url'>${each.url}</span></a>\r\n`
 			}
 		},
 		createElements: function(data) {
@@ -177,7 +185,7 @@ export default {
 			if (data.children && Array.isArray(data.children) && data.children.length) {
 				kids = data.children.map(each => this.createChildrenElements(each)).join("")
 			}
-			return `<details open><summary>${data.name}</summary>${kids}</details>`
+			return `<details open><summary>${data.name}</summary>\r\n${kids}</details>\r\n`
 		},
 		createChildrenElementsMarkdown: function(each) {
 			if (each.type == "folder") {
@@ -185,9 +193,9 @@ export default {
 				if (each.children && Array.isArray(each.children) && each.children.length) {
 					kids = each.children.map(each => this.createChildrenElementsMarkdown(each)).join("")
 				}
-				return `<details class='child'><summary>${each.name !== "" ? each.name : each.url}</summary>${kids}</details>`
+				return `\t<details class='child'><summary>${each.name !== "" ? each.name : each.url}</summary>\r\n${kids}</details>\r\n`
 			} else if (each.type = "url") {
-				return `<a href='${each.url}' target='_blank'>${each.name !== "" ? each.name : each.url}</a>`
+				return `\t\t<a href='${each.url}' target='_blank'>${each.name !== "" ? each.name : each.url}</a>\r\n`
 			}
 		},
 		createElementsMarkdown: function(data) {
@@ -195,31 +203,31 @@ export default {
 			if (data.children && Array.isArray(data.children) && data.children.length) {
 				kids = data.children.map(each => this.createChildrenElementsMarkdown(each)).join("")
 			}
-			return `<details open><summary>${data.name}</summary>${kids}</details>`
+			return `<details open><summary>${data.name}</summary>\r\n${kids}</details>\r\n`
 		},
 		makeHTML: function(html, type) {
 			let h = `<!DOCTYPE html>
 <html lang='en'>
-<head>
-	<meta charset='UTF-8'>
-	<meta name='viewport' content='width=device-width, initial-scale=1.0'>
-	<title>Bookmarks</title>
-	<link rel='stylesheet' href='./bookmarks_styles.css'>
-</head>
-<body>
-${html}
-</body>
+	<head>
+		<meta charset='UTF-8'>
+		<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+		<title>Bookmarks</title>
+		<link rel='stylesheet' href='./bookmarks_styles.css'>
+	</head>
+	<body>
+		${html}
+	</body>
 </html>`
 			let m = `<html lang='en'>
-<head>
-	<meta charset='UTF-8'>
-	<meta name='viewport' content='width=device-width, initial-scale=1.0'>
-	<title>Bookmarks</title>
-	<link rel='stylesheet' href='./bookmarks_styles.css'>
-</head>
-<body>
-${html}
-</body>
+	<head>
+		<meta charset='UTF-8'>
+		<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+		<title>Bookmarks</title>
+		<link rel='stylesheet' href='./bookmarks_styles.css'>
+	</head>
+	<body>
+		${html}
+	</body>
 </html>`
 			return type == "html" ? h : type == "markdown" ? m : ""
 		}
@@ -242,7 +250,7 @@ ${html}
 		transition: all 0.2s ease-in-out
 		box-shadow: 0 0 0.25rem 0.15rem rgba(black, 0.1)
 		@media (min-width: 50rem)
-			margin: calc(1rem + 5vw) auto
+			margin: calc(0.5rem + 2vw) auto
 		#example
 			@include flexCenter
 			flex-direction: column
@@ -251,7 +259,6 @@ ${html}
 				max-width: 100%
 				border-radius: 0.25rem
 				box-sizing: content-box
-				box-shadow: 0 0 0.25rem 0.15rem rgba(black, 0.25)
 			#example-links
 				width: 100%
 				margin: 0.5rem auto
@@ -265,7 +272,7 @@ ${html}
 					background: #eee
 					@include flexCenter
 					text-decoration: none
-					border-radius: 0.25rem
+					border-radius: 1rem/10rem
 					transition: all 0.2s ease-in-out
 					box-shadow: 0 0 0.25rem 0.15rem rgba(black, 0.05)
 					&:hover
@@ -303,8 +310,11 @@ ${html}
 					line-height: 1.1rem
 					text-indent: 0.5rem
 					@include flexCenter
+					details
+						summary
+							outline: none
 		#label
-			margin: 2rem auto
+			margin: 2rem auto 1rem auto
 			padding: 1.5rem
 			cursor: pointer
 			background: #eee
@@ -329,6 +339,22 @@ ${html}
 				padding: 0.5rem
 				box-sizing: content-box
 				transition: all 0.1s ease-in-out
+		#notes
+			@include flexCenter
+			flex-direction: column
+			#notes-title
+				padding: 0.5rem
+				font-size: 1.5rem
+				text-align: center
+				line-height: 1.5rem
+				@include flexCenter
+			.note
+				max-width: 45rem
+				padding: 0.25rem
+				font-size: 1.1rem
+				text-align: center
+				line-height: 1.1rem
+				@include flexCenter
 		#input
 			display: none
 		#output
@@ -354,6 +380,9 @@ ${html}
 				&:hover
 					box-shadow: 0 0 0.25rem 0.15rem rgba(green, 0.15)
 					background: rgba(green, 0.33)
+					.output-format-icon-wrapper
+						.output-format-icon
+							transform: scale(1.25)
 				.output-format-text
 					font-size: 1.5rem
 					text-align: center
@@ -364,4 +393,5 @@ ${html}
 						height: 1.5rem
 						padding: 0.5rem
 						box-sizing: content-box
+						transition: all 0.1s ease-in-out
 </style>
