@@ -215,8 +215,7 @@ export default {
 		<link rel='stylesheet' href='./bookmarks_styles.css'>
 	</head>
 	<body>
-		${html}
-	</body>
+		${html}</body>
 </html>`
 			let m = `<html lang='en'>
 	<head>
@@ -226,8 +225,7 @@ export default {
 		<link rel='stylesheet' href='./bookmarks_styles.css'>
 	</head>
 	<body>
-		${html}
-	</body>
+		${html}</body>
 </html>`
 			return type == "html" ? h : type == "markdown" ? m : ""
 		}
